@@ -1,0 +1,150 @@
+doctype html
+meta(charset='utf-8')
+head
+  style(type="text/css").
+    @media print {
+      table{
+        font-size:10px;
+      }
+      .payment-sum{
+        font-size:23px;
+        padding-top:20px;
+      }
+      .invoice-number{
+        font-size:24px;
+      }
+      .signature{
+        padding:100px 5px 5px;
+        border:1px solid #ddd;
+        font-size:7px;
+      }
+    }
+  link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css", type="text/css", rel="stylesheet", media="print")
+body
+  div(class='container')
+    div(class='row')
+      div(class='col-xs-5 col-xs-offset-7')
+        table(class='table table-bordered')
+          tr
+            th Miejsce wystawienia:
+            td= invoice.invoice_city
+          tr
+            th Data wystawienie:
+            td= invoice.invoice_date
+          tr
+            th Data sprzedaży:
+            td= invoice.sale_date
+    div(class='row')
+      div(class='col-xs-5')
+        table(class='table table-bordered')
+          tr
+            td Sprzedawca:
+            td
+              div= invoice.Account.firmName_1
+              if invoice.Account.firmName_2
+                div= invoice.Account.firmName_2
+              if invoice.Account.firmName_3
+                div= invoice.Account.firmName_3
+          tr
+            td Adres:
+            td
+              div= invoice.Account.address_1
+              if invoice.Account.address_2
+                div= invoice.Account.address_2
+              if invoice.Account.address_3
+                div= invoice.Account.address_3
+          tr
+            td NIP:
+            td= invoice.Account.nip
+      div(class='col-xs-5 col-xs-offset-2')
+        table(class='table table-bordered')
+          tr
+            td Nabywca:
+            td
+              div= invoice.CustomerDetail.firmName_1
+              if invoice.CustomerDetail.firmName_2
+                div= invoice.CustomerDetail.firmName_2
+              if invoice.CustomerDetail.firmName_3
+                div= invoice.CustomerDetail.firmName_3
+          tr
+            td Adres:
+            td
+              div= invoice.CustomerDetail.address_1
+              if invoice.CustomerDetail.address_2
+                div= invoice.CustomerDetail.address_2
+              if invoice.CustomerDetail.address_3
+                div= invoice.CustomerDetail.address_3
+          tr
+            td NIP:
+            td= invoice.CustomerDetail.nip
+    div(class='row')
+      div(class="text-center invoice-number")= invoice.invoice_number
+    div(class='row')
+      div(class='col-xs-12')
+        table(class='table table-bordered table-striped')
+          thead
+            tr
+              th Lp.
+              th Nazwa
+              th Ilość
+              th jm
+              th Cena netto
+              th Stawka VAT
+              th Wartość netto
+              th Kwota VAT
+              th Wartość brutto
+          tbody
+            each invoiceItem, i in invoice.InvoiceItems
+              tr
+                td= (i+1)
+                td= invoiceItem.name
+                td= invoiceItem.quantity
+                td= invoiceItem.unit
+                td= invoiceItem.price_net
+                td #{invoiceItem.vat_rate} %
+                td= invoiceItem.value_net
+                td= invoiceItem.value_vat
+                td= invoiceItem.value_gross
+    div(class='row')
+      div(class='col-xs-6 col-xs-offset-6')
+        table(class='table table-bordered')
+          thead
+            tr
+              th Stawka VAT
+              th Wartość netto
+              th Kwota VAT
+              th Wartość brutto
+          tbody
+            each valueTaxRate, i in invoice.ValueTaxRates
+              tr
+                td= valueTaxRate.vat_rate
+                td= valueTaxRate.value_net
+                td= valueTaxRate.value_vat
+                td= valueTaxRate.value_gross
+            tr
+              th Razem
+              th= invoice.value_net
+              th= invoice.value_vat
+              th= invoice.value_gross
+    div(class='row')
+      div(class='col-xs-5')
+        table(class='table table-bordered')
+          tr
+            td Sposób płatności:
+            td= invoice.payment_method
+          tr
+            td Termin płatności:
+            td= invoice.payment_due
+          tr
+            td Zapłacono:
+            td= invoice.actual_payment
+          tr
+            td Pozostało do zapłaty:
+            td= invoice.value_balance
+      div(class='col-xs-6 col-xs-offset-1')
+        div(class="payment-sum") Razem do zapłaty: #{invoice.value_gross} #{invoice.currency}
+    div(class='row')
+      div(class='col-xs-5')
+        div(class='signature') imię, nazwisko i podpis osoby upoważnionej do odebrania dokumentu
+      div(class='col-xs-5 col-xs-offset-2')
+        div(class='signature') imię, nazwisko i podpis osoby upoważnionej do wystawienia dokumentu
