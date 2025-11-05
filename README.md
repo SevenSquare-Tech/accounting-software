@@ -10,6 +10,9 @@ This project helps manage **contractors, invoices, and PDF invoice generation** 
 This application provides an easy-to-use API for creating and managing invoices and contractor data.  
 It is designed for small or medium-sized businesses that need a lightweight self-hosted invoice management tool.
 
+[Step-by-step guide to build an Accounting Software in NodeJs.](https://www.sevensquaretech.com/nodejs-accounting-software-tutorial-with-github-code/
+ )
+
 ---
 
 ## ⚙️ Features
